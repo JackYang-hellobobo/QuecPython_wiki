@@ -1,4 +1,3 @@
 <!-- _navbar.md -->
-
-* [中文](/zh-cn/)
-* [En](/en-us/)
+* [CN-简体中文](/zh-cn/)
+* [EN(US)-English](/en-us/)
