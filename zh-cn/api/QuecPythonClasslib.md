@@ -1158,7 +1158,7 @@ sim卡解锁。当多次错误输入 PIN/PIN2 码后，SIM 卡状态为请求 PU
 
 > **sim.setCallback(usrFun)**
 
-注册监听回调函数。在接收短信时，会触发该回调函数。
+注册监听回调函数。响应SIM卡热插拔。
 
 (该函数只有在SIM卡热插拔的宏打开的情况下才会存在，一般默认打开)
 
@@ -1356,6 +1356,69 @@ sim.setCallback(cb)
 ```python
 >>> voiceCall.callEnd()
 0
+```
+
+
+
+##### 设置来电自动挂断
+
+> **voiceCall.setAutoCancel(enable)**
+
+设置来电自动挂断（仅1803S平台支持该接口）。
+
+* 参数 
+
+| 参数        | 参数类型 | 参数说明                                                     |
+| ----------- | -------- | ------------------------------------------------------------ |
+| enable      | int      | 开启或者关闭来电自动挂断功能，1：开启，0：关闭               |
+
+* 返回值
+
+  成功返回整型0，失败返回整型-1。
+
+* 示例
+
+```python
+#手机呼叫模块，默认不会自动挂断
+>>> voiceCall.getAutoCancelStatus()
+0
+
+#设置自动挂断功能，手机呼叫模块，默认自动挂断
+>>> voiceCall.setAutoCancel(1)
+0
+>>> voiceCall.getAutoCancelStatus()
+1
+```
+
+
+
+##### 获取来电自动挂断使能状态
+
+> **voiceCall.getAutoCancelStatus()**
+
+获取来电自动挂断使能状态（仅1803S平台支持该接口）。
+
+* 参数 
+
+无
+
+* 返回值
+
+  0:默认不会自动挂断
+  1:默认自动挂断
+
+* 示例
+
+```python
+#手机呼叫模块，默认不会自动挂断
+>>> voiceCall.getAutoCancelStatus()
+0
+
+#设置自动挂断功能，手机呼叫模块，默认自动挂断
+>>> voiceCall.setAutoCancel(1)
+0
+>>> voiceCall.getAutoCancelStatus()
+1
 ```
 
 
@@ -7075,7 +7138,7 @@ lcd = LCD()   # 创建lcd对象
 
 
 
-###### LCD初始化
+###### LCD初始化（接口1：设备接模块LCM接口）
 
 > **lcd.lcd_init(lcd_init_data, lcd_width, lcd_hight, lcd_clk, data_line, line_num, lcd_type, lcd_invalid, lcd_display_on, lcd_display_off, lcd_set_brightness)**
 
@@ -7108,6 +7171,49 @@ lcd = LCD()   # 创建lcd对象
   
   -3  	缓存申请失败
   
+  -5  	配置参数错误 
+
+
+
+###### LCD初始化（接口2：设备接模块SPI接口）
+
+> **lcd.lcd_init(lcd_init_data, lcd_width, lcd_hight, lcd_clk, data_line, line_num, lcd_type, lcd_invalid, lcd_display_on, lcd_display_off, lcd_set_brightness, lcd_interface, spi_port, spi_mode, cs_pin, dc_pin, rst_pin)**
+
+初始化LCD
+
+- 参数
+
+| 参数               | 类型      | 说明                                                         |
+| ------------------ | --------- | ------------------------------------------------------------ |
+| lcd_init_data      | bytearray | 传入 LCD 的配置命令                                          |
+| lcd_width          | int       | LCD 屏幕的宽度。宽度不超过 500                               |
+| lcd_hight          | int       | LCD 屏幕的高度。高度不超过 500                               |
+| lcd_clk            | int       | SPI 时钟。见machine SPI 创建SPI对象参数说明clk               |
+| data_line          | int       | 数据线数。参数值为 1 和 2。                                  |
+| line_num           | int       | 线的数量。参数值为 3 和 4。                                  |
+| lcd_type           | int       | 屏幕类型。0：rgb；1：fstn                                    |
+| lcd_invalid        | bytearray | 传入LCD 区域设置的配置命令                                   |
+| lcd_display_on     | bytearray | 传入LCD 屏亮的配置命令                                       |
+| lcd_display_off    | bytearray | 传入LCD 屏灭的配置命令                                       |
+| lcd_set_brightness | bytearray | 传入LCD屏亮度的配置命令。设置为 None表示由 LCD_BL_K 控制亮度（有些屏幕是由寄存器控制屏幕亮度，有 些是通过 LCD_BL_K 控制屏幕亮度） |
+| lcd_interface      | int       | LCD接口类型。0：LCM接口；1：SPI接口                          |
+| spi_port           | int       | 通道选择[0,1]，参照SPI部分                                   |
+| spi_mode           | int       | SPI 的工作模式(模式0最常用):<br />时钟极性CPOL: 即SPI空闲时，时钟信号SCLK的电平（0:空闲时低电平; 1:空闲时高电平）<br /> 0 : CPOL=0, CPHA=0<br /> 1 : CPOL=0, CPHA=1<br /> 2:  CPOL=1, CPHA=0<br /> 3:  CPOL=1, CPHA=1 |
+| cs_pin             | int       | CS引脚，见machine Pin常量说明                                |
+| dc_pin             | int       | DC引脚，见machinePin常量说明                                 |
+| rst_pin            | int       | RST引脚，见machinePin常量说明                                |
+
+* 返回值
+
+
+  0  	 成功 
+
+  -1  	已经初始化 
+
+  -2  	参数错误（为空或过大（大于 1000 像素点）） 
+
+  -3  	缓存申请失败
+
   -5  	配置参数错误 
 
 
