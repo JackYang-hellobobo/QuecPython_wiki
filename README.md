@@ -1,5 +1,9 @@
-# QuecPython
+# QuecPython (Depreacted） 已弃用 
 > 一种全新的物联网开发方式  
+### 最新版请移步 
+### - _[QuecPython Wiki](https://python.quectel.com/doc/en/index.html)_
+### - _[QuectPython Wiki Gitee仓库](https://gitee.com/qpy-doc-center/teedoc_with_qpydoc)_
+
 
 ## 概述 Overview
 使用QuecPython，你可以使用Python快速实现各种物联网应用，简单、高效、可靠。  
